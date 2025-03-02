@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 
-app.use(express.static('static'));
+app.use(express.static("static"));
 app.listen(3000, function () {
-    console.log('Server is running on http://localhost:3000');
+  console.log("Server is running on http://localhost:3000");
 });
