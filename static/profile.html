@@ -49,11 +49,29 @@
             <div class="relative inline-flex items-center justify-center w-15 h-15 cursor-pointer overflow-hidden bg-gray-300 rounded-full">
               <span class="font-medium text-gray-600">JD</span>
             </div>
-            <h5 class="my-1 text-xl font-medium text-gray-900 dark:text-white">John Doe</h5>
-            <span class="text-sm text-gray-500 dark:text-gray-400">Visual Designer</span>
-            <div class="flex mt-4 md:mt-6">
-              <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add friend</a>
-              <a href="#" class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Message</a>
+            <div class="flex items-center mt-4">
+              <h5 class="me-2 text-xl font-medium text-gray-900 dark:text-white">John Doe</h5>
+              <button class="hover:cursor-pointer">
+                <svg class="w-[20px] h-[20px] text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
+                </svg>
+              </button>
+            </div>
+            <form class="space-y-6 mt-6 p-4" action="#">
+              <h5 class="text-medium font-medium text-gray-900">Change your password</h5>
+              <div>
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Your password</label>
+                <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5" required />
+              </div>
+              <div>
+                <label for="password_again" class="block mb-2 text-sm font-medium text-gray-900">Your password again</label>
+                <input type="password_again" name="password" id="password_again" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5" required />
+              </div>
+              <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Change password</button>
+            </form>
+            <a href="login.html" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">Sign out</a>
+            <div class="flex justify-center text-sm font-medium text-gray-500">
+              <a href="login.html" class="text-red-700 hover:underline">Delete account</a>
             </div>
           </div>
         </div>
