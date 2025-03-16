@@ -3,6 +3,7 @@ const authMW = require("../middleware/auth/authMW");
 const checkPassMW = require("../middleware/auth/checkPassMW");
 const renderMW = require("../middleware/renderMW");
 //user
+const checkExistingUserEmailMW = require("../middleware/user/checkExistingUserEmailMW");
 const createUserMW = require("../middleware/user/createUserMW");
 const deleteUserMW = require("../middleware/user/deleteUserMW");
 const editUserMW = require("../middleware/user/editUserMW");
@@ -20,29 +21,31 @@ const getUsersChirpsMW = require("../middleware/chirp/getUsersChirpsMW");
 module.exports = function (app) {
   const objRepo = {};
 
-  app.use("/", checkPassMW(objRepo), renderMW(objRepo, "login"));
+  app.get("/", checkPassMW(objRepo), renderMW(objRepo, "login")); //Get the login page
 
-  app.get("/user", authMW(objRepo), getUserMW(objRepo), renderMW(objRepo, "user"));
+  app.get("/user", authMW(objRepo), getUserMW(objRepo), renderMW(objRepo, "user")); //Get the user's profile page
 
-  app.post("/user/create", createUserMW(objRepo));
+  app.post("/user/forgottenpass", checkExistingUserEmailMW(objRepo)); //Send a password reset email
 
-  app.del("/user/delete", authMW(objRepo), deleteUserMW(objRepo));
+  app.post("/user/create", createUserMW(objRepo)); //Create a new user
 
-  app.patch("/user/edit", authMW(objRepo), editUserMW(objRepo));
+  app.delete("/user/delete", authMW(objRepo), deleteUserMW(objRepo)); //Delete the user
 
-  app.get("/friends", authMW(objRepo), getFriendUsersMW(objRepo), renderMW(objRepo, "friends"));
+  app.patch("/user/edit", authMW(objRepo), editUserMW(objRepo)); //Edit the user's data
 
-  app.patch("/friends/edit/:userid", authMW(objRepo), editUserFriendListMW(objRepo));
+  app.get("/friends", authMW(objRepo), getFriendUsersMW(objRepo), renderMW(objRepo, "friends")); //Get the user's friends
 
-  app.get("friends/search/:searchkey", authMW(objRepo), getUsersViaSearchMW(objRepo));
+  app.patch("/friends/edit/:userid", authMW(objRepo), editUserFriendListMW(objRepo)); //Edit the user's friend list
 
-  app.get("/chirps", authMW(objRepo), getAllChirpsMW(objRepo), renderMW(objRepo, "chirps"));
+  app.get("friends/search/:searchkey", authMW(objRepo), getUsersViaSearchMW(objRepo)); //Get users via search
 
-  app.get("/yourchirps", authMW(objRepo), getUsersChirpsMW(objRepo), renderMW(objRepo, "userchirps"));
+  app.get("/chirps", authMW(objRepo), getAllChirpsMW(objRepo), renderMW(objRepo, "chirps")); //Get all chirps that are followed by the user
 
-  app.post("/yourchirps/create", authMW(objRepo), createChirpMW(objRepo));
+  app.get("/yourchirps", authMW(objRepo), getUsersChirpsMW(objRepo), renderMW(objRepo, "userchirps")); //Get the user's chirps
 
-  app.del("/yourchirps/delete/:chirpid", authMW(objRepo), delChirpMW(objRepo));
+  app.post("/yourchirps/create", authMW(objRepo), createChirpMW(objRepo)); //Create a new chirp
 
-  app.patch("/yourchirps/edit/:chirpid", authMW(objRepo), editChirpMW(objRepo));
+  app.delete("/yourchirps/delete/:chirpid", authMW(objRepo), delChirpMW(objRepo)); //Delete a chirp
+
+  app.patch("/yourchirps/edit/:chirpid", authMW(objRepo), editChirpMW(objRepo)); //Edit a chirp
 };
