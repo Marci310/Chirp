@@ -23,11 +23,15 @@ module.exports = function (app) {
 
   app.get("/", checkPassMW(objRepo), renderMW(objRepo, "login")); //Get the login page
 
+  app.get("/register", renderMW(objRepo, "register")); //Get the register page
+
+  app.post("/register", createUserMW(objRepo)); //Create a new user
+
+  app.get("/forgottenpass", renderMW(objRepo, "forgotten-pass")); //Get the forgotten password page
+
+  app.post("/forgottenpass", checkExistingUserEmailMW(objRepo), renderMW(objRepo, "login")); //Send a password reset email
+
   app.get("/user", authMW(objRepo), getUserMW(objRepo), renderMW(objRepo, "user")); //Get the user's profile page
-
-  app.post("/user/forgottenpass", checkExistingUserEmailMW(objRepo)); //Send a password reset email
-
-  app.post("/user/create", createUserMW(objRepo)); //Create a new user
 
   app.delete("/user/delete", authMW(objRepo), deleteUserMW(objRepo)); //Delete the user
 
