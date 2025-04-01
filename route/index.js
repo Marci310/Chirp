@@ -31,6 +31,8 @@ module.exports = function (app) {
 
   app.post("/forgottenpass", checkExistingUserEmailMW(objRepo), renderMW(objRepo, "login")); //Send a password reset email
 
+  app.post("/login", checkPassMW(objRepo)); //Login the user
+
   app.get("/user", authMW(objRepo), getUserMW(objRepo), renderMW(objRepo, "user")); //Get the user's profile page
 
   app.delete("/user/delete", authMW(objRepo), deleteUserMW(objRepo)); //Delete the user
@@ -45,7 +47,7 @@ module.exports = function (app) {
 
   app.get("/chirps", authMW(objRepo), getAllChirpsMW(objRepo), renderMW(objRepo, "chirps")); //Get all chirps that are followed by the user
 
-  app.get("/yourchirps", authMW(objRepo), getUsersChirpsMW(objRepo), renderMW(objRepo, "userchirps")); //Get the user's chirps
+  app.get("/yourchirps", authMW(objRepo), getUsersChirpsMW(objRepo), renderMW(objRepo, "user-chirps")); //Get the user's chirps
 
   app.post("/yourchirps/create", authMW(objRepo), createChirpMW(objRepo)); //Create a new chirp
 
