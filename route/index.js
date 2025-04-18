@@ -21,7 +21,7 @@ const getUsersChirpsMW = require("../middleware/chirp/getUsersChirpsMW");
 module.exports = function (app) {
   const objRepo = {};
 
-  app.get("/", checkPassMW(objRepo), renderMW(objRepo, "login")); //Get the login page
+  app.get("/", authMW(objRepo), renderMW(objRepo, "login")); //Get the login page
 
   app.get("/register", renderMW(objRepo, "register")); //Get the register page
 
@@ -33,7 +33,7 @@ module.exports = function (app) {
 
   app.post("/login", checkPassMW(objRepo)); //Login the user
 
-  app.get("/user", authMW(objRepo), getUserMW(objRepo), renderMW(objRepo, "user")); //Get the user's profile page
+  app.get("/user", authMW(objRepo), getUserMW(objRepo), renderMW(objRepo, "profile")); //Get the user's profile page
 
   app.delete("/user/delete", authMW(objRepo), deleteUserMW(objRepo)); //Delete the user
 
