@@ -1,0 +1,38 @@
+<form class="space-y-6 w-[90%]" action="<%= formAction === 'new' ? '/register' : '/user' %>" method="POST">
+    <h5 class="text-xl font-medium text-gray-900"><%= formAction === 'new' ? "Register to our platform" : "Modify your user" %></h5>
+    
+    <div>
+      <label for="user" class="block mb-2 text-sm font-medium text-gray-900">Your username</label>
+      <input name="user" id="user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+             placeholder="yourUserName" required 
+             value="<%= typeof formData !== 'undefined' ? formData.user || '' : '' %>" />
+             <% if (typeof userError !== 'undefined') { %>
+              <p class="text-sm text-red-600 mt-2"><%= userError %></p>
+            <% } %>
+    </div>
+    <div>
+      <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Your email</label>
+      <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+             placeholder="name@company.com" required
+             value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>" />
+             <% if (typeof emailError !== 'undefined') { %>
+              <p class="text-sm text-red-600 mt-2"><%= emailError %></p>
+            <% } %>
+    </div>
+    <div>
+      <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Your password</label>
+      <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+      <%= formAction === 'new' ? 'required' : '' %> />
+      <% if (typeof passwordError !== 'undefined') { %>
+        <p class="text-sm text-red-600 mt-2"><%= passwordError %></p>
+      <% } %>
+    </div>
+    <div>
+      <label for="password_again" class="block mb-2 text-sm font-medium text-gray-900">Your password again</label>
+      <input type="password" name="password_again" id="password_again" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+      <%= formAction === 'new' ? 'required' : '' %> />
+    </div>
+    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+      <%= formAction === 'new' ? 'Register' : 'Update Profile' %>
+    </button>
+  </form>

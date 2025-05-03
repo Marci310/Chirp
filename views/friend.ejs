@@ -1,9 +1,45 @@
-<div class="block w-xl p-6 bg-white border border-gray-200 rounded-lg shadow-sm mb-2">
+<div id="friendId-<%= friendId %>" class="block w-xl p-6 bg-white border border-gray-200 rounded-lg shadow-sm mb-2">
   <div class="flex justify-between items-center">
     <div class="flex items-center">
-      <%-include('user-icon') %>
-      <p class="ml-4 font-medium text-lg">Liz Schafer</p>
+      <%- include('user-icon', {small: true, name: userName}) %>
+      <p class="ml-4 font-medium text-lg"><%= userName %></p>
     </div>
-    <button type="button" class="focus:outline-none text-white bg-green-400 hover:bg-green-500 focus:ring-4 focus:ring-green-400 font-medium rounded-lg text-sm px-4 py-1.5 me-2.5">Follow</button>
+    <% if (following) { %>
+    <button onclick="removeFriend('<%= friendId %>')" class="focus:outline-none text-white bg-red-400 hover:bg-red-500 focus:ring-4 focus:ring-red-400 font-medium rounded-lg text-sm px-4 py-1.5 me-2.5">Unfollow</button>
+    <% } else { %>
+    <button onclick="addFriend('<%= friendId %>')" class="focus:outline-none text-white bg-green-400 hover:bg-green-500 focus:ring-4 focus:ring-green-400 font-medium rounded-lg text-sm px-4 py-1.5 me-2.5">Follow</button>
+    <% } %>
   </div>
 </div>
+
+<script>
+  function removeFriend(friendId) {
+    fetch(`/friends/${friendId}`, {
+      method: "DELETE",
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      window.location.href = "/friends";
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  }
+  
+  function addFriend(friendId) {
+    fetch(`/friends/${friendId}`, {
+      method: "POST",
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      window.location.href = "/friends";
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  }
+</script>

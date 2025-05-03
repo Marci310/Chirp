@@ -1,11 +1,11 @@
-/**
- * Edits the user's data in the database then redirects to /user
- */
-
 const requireOption = require("../requireOption");
 
 module.exports = function (objectrepository) {
   return function (req, res, next) {
-    next();
+    if(!req.session.userId) {
+      res.render("login");
+    } else {
+        res.redirect("/chirps");
+    }
   };
 };

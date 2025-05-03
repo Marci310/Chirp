@@ -2,9 +2,41 @@
 <div class="grid grid-cols-12 max-w-screen">
   <%- include('navbar') -%>
   <main class="col-span-9 h-screen overflow-y-auto col-start-4 bg-blue-50">
-    <%- include('user-button') -%>
+    <%- include('user-button', { userName: userName, userEmail: userEmail }) %>
+    <form action="/chirps" method="POST" class="flex flex-col items-center mb-4">
+      <% if (typeof text !== 'undefined' && text) { %>
+      <textarea name="text" class="w-[80%] font-normal mb-4 p-4 text-gray-700 border-box overflow-y-auto resize-none border-none focus:outline-none focus:ring-0 p-0 bg-white" required>
+          <%= text %>
+      </textarea>
+      <% } else { %>
+      <textarea name="text" class="w-[80%] font-normal mb-4 p-4 text-gray-700 border-box overflow-y-auto resize-none border-none focus:outline-none focus:ring-0 p-0 bg-white" placeholder="Share your world..." required></textarea>
+      <% } %> <% if (typeof textError !== 'undefined') { %>
+      <p class="text-sm text-red-600 mt-2"><%= textError %></p>
+      <% } %>
 
-    <section class="flex flex-col items-center"><%- include('chirp') -%> <%- include('chirp') -%> <%- include('chirp') -%> <%- include('chirp') -%></section>
+      <div class="flex justify-end">
+        <button type="submit" class="font-medium hover:underline hover:text-blue-500 text-sm">Submit</button>
+      </div>
+    </form>
+
+    <section class="flex flex-col items-center">
+      <% if (chirps && chirps.length > 0) { %>
+        <% chirps.forEach(function(chirp) { %>
+          <%- include('chirp', { 
+            isOwner: userId === chirp.user._id.toString(), 
+            chirpId: chirp._id, 
+            name: chirp.user.name, 
+            text: chirp.text, 
+            date: new Date(chirp.date).toISOString().slice(0,10).replace(/-/g,'.') + ' ' + 
+                  new Date(chirp.date).toTimeString().slice(0,5) 
+          }) %>
+        <% }); %>
+      <% } else { %>
+        <div class="text-center p-6">
+          <p class="text-gray-500">No chirps yet. Be the first to post!</p>
+        </div>
+      <% } %>
+    </section>
   </main>
 </div>
 <%-include('footer') -%>

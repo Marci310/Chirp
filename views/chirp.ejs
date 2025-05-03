@@ -1,7 +1,62 @@
-<div class="block max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow-sm mb-2">
-  <span class="flex justify-between items-center"
-    ><p class="font-medium text-lg">Liz Schafer</p>
-    <p class="text-xs">2025.02.15 15:35</p></span
-  >
-  <p class="font-normal text-gray-700">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
+<div id="chirp-<%= chirpId %>" class="block w-[80%] p-6 bg-white border border-gray-200 rounded-lg shadow-sm mb-2">
+  <div class="flex justify-between items-center">
+    <p class="font-medium text-lg"><%= name %></p>
+    <p class="text-xs"><%= date %></p>
+  </div>
+
+  <div id="chirp-content-<%= chirpId %>">
+    <p class="font-normal text-gray-700"><%= text %></p>
+  </div>
+
+  <div id="chirp-edit-<%= chirpId %>" class="hidden">
+    <form action="/chirps/<%= chirpId %>" method="POST">
+      <div class="block">
+        <textarea name="text" id="chirp-text-<%= chirpId %>" class="font-normal w-full text-gray-700 border-box overflow-y-auto resize-none border-1 focus:outline-none focus:ring-0 p-0 bg-transparent"><%= text %></textarea>
+        <% if (typeof textError !== 'undefined') { %>
+        <p class="text-sm text-red-600 mt-2"><%= textError %></p>
+        <% } %>
+      </div>
+      <div class="flex justify-end">
+        <button type="button" onclick="toggleEditMode('<%= chirpId %>', false)" class="font-medium hover:underline hover:text-blue-500 text-sm me-2">Cancel</button>
+        <button type="submit" class="font-medium hover:underline hover:text-blue-500 text-sm">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <% if (typeof isOwner !== 'undefined' && isOwner) { %>
+  <div id="chirp-actions-<%= chirpId %>" class="flex justify-end">
+    <button onclick="toggleEditMode('<%= chirpId %>', true)" class="font-medium hover:underline hover:text-blue-500 text-sm me-2">Edit</button>
+    <button onclick="deleteChirp('<%= chirpId %>')" class="font-medium hover:underline hover:text-blue-500 text-sm">Delete</button>
+  </div>
+  <% } %>
 </div>
+
+<% if (typeof isOwner !== 'undefined' && isOwner) { %>
+<script>
+  function toggleEditMode(chirpId, edit) {
+    document.getElementById(`chirp-content-${chirpId}`).style.display = edit ? "none" : "block";
+    document.getElementById(`chirp-edit-${chirpId}`).style.display = edit ? "block" : "none";
+    document.getElementById(`chirp-actions-${chirpId}`).style.display = edit ? "none" : "flex";
+  }
+
+  function deleteChirp(chirpId) {
+    if (confirm("Are you sure you want to delete this chirp?")) {
+      fetch(`/chirps/${chirpId}`, {
+        method: "DELETE",
+      })
+      .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const currentPath = window.location.pathname;
+      const redirectPath = currentPath.includes(`/chirps/${chirpId}`) 
+        ? (currentPath.includes('/yourchirps') ? '/yourchirps' : '/chirps')
+        : currentPath;
+      
+      window.location.href = redirectPath;
+    })
+      .catch((error) => console.error("Error:", error));
+    }
+  }
+</script>
+<% } %>

@@ -2,15 +2,51 @@
 <div class="grid grid-cols-12 max-w-screen">
   <%- include('navbar') -%>
   <main class="col-span-9 h-screen overflow-y-auto col-start-4 bg-blue-50">
-    <%- include('user-button') -%>
+    <%- include('user-button', { userName: userName, userEmail: userEmail }) %>
 
-    <section class="flex flex-col items-center"><%- include('friend') -%> <%- include('friend') -%> <%- include('friend') -%> <%- include('friend') -%></section>
-    <section class="flex flex-col items-center mt-4">
-      <div class="mb-4">
-        <label for="user" class="block mb-2 text-3xl font-medium text-gray-900">Find new friends...</label>
-        <input name="user" id="user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-xl p-2.5" placeholder="Start your search for new friends..." required />
+    <section class="flex flex-col items-center">
+      <h2 class="text-3xl font-bold mb-6">Your Friends</h2>
+      <% friends.forEach(function(friend) { %> 
+        <%- include('friend', { 
+          following: true, 
+          friendId: friend._id, 
+          userName: friend.name, }) %>
+      <% }); %>
+        <% if (friends.length === 0) { %>
+      <div class="text-center p-6">
+        <p class="text-gray-500">No friends found. Time to add one!</p>
       </div>
-      <%- include('friend') -%> <%- include('friend') -%>
+      <% } %>
+    </section>
+    <section class="flex flex-col items-center mt-4">
+      
+      <div class="mb-4 w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-4">Find New Friends</h2>
+        <form action="/friendsearch" method="POST" class="w-full">
+          <div class="flex items-center">
+            <input name="searchTerm" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Search by name or email..." value="<%= typeof searchTerm !== 'undefined' ? searchTerm : '' %>" />
+            <button type="submit" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded">Search</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="w-full max-w-md">
+        <% if (typeof searchUsers !== 'undefined' && searchUsers.length > 0) { %>
+        <h3 class="text-lg font-medium mb-2">Search Results</h3>
+        <div class="flex flex-col items-center">
+        <% searchUsers.forEach(function(user) { %> 
+          <%- include('friend', { 
+            following: user.isFollowing, 
+            friendId: user._id, 
+            userName: user.name }) %>
+         <% }); %> 
+         <% } else if (typeof searchTerm !== 'undefined' && searchTerm) { %>
+        <div class="text-center p-6">
+          <p class="text-gray-500">No users found for this search.</p>
+        </div>
+      </div>
+        <% } %>
+      </div>
     </section>
   </main>
 </div>

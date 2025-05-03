@@ -2,35 +2,31 @@
 <div class="grid grid-cols-12 max-w-screen">
   <%- include('navbar') -%>
   <main class="col-span-9 h-screen col-start-4 bg-blue-50 flex items-center justify-center">
-    <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
+    <div class="w-full max-w-l bg-white border border-gray-200 rounded-lg shadow-sm">
       <div class="flex flex-col items-center py-10">
-        <div class="relative inline-flex items-center justify-center w-15 h-15 cursor-pointer overflow-hidden bg-gray-300 rounded-full">
-          <span class="font-medium text-gray-600">JD</span>
-        </div>
+        <%- include('user-icon', {small: false, name: userName})%>
         <div class="flex items-center mt-4">
-          <h5 class="me-2 text-xl font-medium text-gray-900">John Doe</h5>
+          <h5 class="me-2 text-xl font-medium text-gray-900"><%= userName %></h5>
           <button class="hover:cursor-pointer">
             <svg class="w-[20px] h-[20px] text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
             </svg>
           </button>
         </div>
-        <form class="space-y-6 mt-6 p-4" action="#">
-          <h5 class="text-medium font-medium text-gray-900">Change your password</h5>
-          <div>
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Your password</label>
-            <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5" required />
-          </div>
-          <div>
-            <label for="password_again" class="block mb-2 text-sm font-medium text-gray-900">Your password again</label>
-            <input type="password_again" name="password" id="password_again" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5" required />
-          </div>
-          <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Change password</button>
-        </form>
-        <a href="login.html" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">Sign out</a>
+        <%- include('form', { formAction: 'edit', formData: formData }) -%>
+        <a href="/logout" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 my-2 focus:outline-none">Sign out</a>
         <div class="flex justify-center text-sm font-medium text-gray-500">
-          <a href="login.html" class="text-red-700 hover:underline">Delete account</a>
+          <button onclick="deleteAccount()" class="text-red-700 hover:underline">Delete account</button>
         </div>
+        <script>
+          function deleteAccount() {
+            if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+              fetch("/user", {
+                method: "DELETE",
+              }).catch((error) => console.error("Error:", error));;
+            }
+          }
+        </script>
       </div>
     </div>
   </main>
