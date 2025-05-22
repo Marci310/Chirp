@@ -9,6 +9,7 @@ module.exports = function (objRepo) {
   return function (req, res, next) {
     return ChirpModel.find({ userId: req.session.userId })
       .populate("userId")
+      .sort({ date: -1 })
       .exec()
       .then((chirps) => {
         res.locals.chirps = chirps;

@@ -21,9 +21,15 @@ module.exports = function (objRepo) {
       })
       .then((chirps) => {
         res.locals.chirps = chirps;
-        res.locals.userName = req.session.userName;
-        res.locals.userEmail = req.session.userEmail;
-        res.locals.userId = req.session.userId;
+        if(!res.locals.userName) {
+          res.locals.userName = req.session.userName;
+        }
+        if(!res.locals.userEmail) {
+          res.locals.userEmail = req.session.userEmail;
+        }
+        if(!res.locals.userId) {
+          res.locals.userId = req.session.userId;
+        }
         req.session.url = "/chirps";
 
         return next();
